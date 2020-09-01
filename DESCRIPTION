@@ -9,10 +9,10 @@ Description: This package fits Bayesian Weighted Quantile Sums regression for co
 License: GPL (>= 2)
 Encoding: UTF-8
 Depends: Rcpp, methods, rstan, ggplot2
-Imports: MASS, Matrix
+Imports: MASS, Matrix, Rcpp, methods, rstan, ggplot2
 LazyData: true
 RoxygenNote: 7.0.2
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2019-10-02 15:20:32 UTC; foppan01
+Packaged: 2020-07-17 21:14:44 UTC; apple
