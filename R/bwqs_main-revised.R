@@ -164,7 +164,8 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
   if(is.null(start_value)){
     start_value = "random"
   }
-
+  
+  suppressWarnings({
   switch (family,
           gaussian = {if(!is.null(KV)){
             
@@ -549,7 +550,7 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
             
           }}
           
-  )
+  )})
 
   if(length(KV_name)==0){
     if(family=="gaussian"){
@@ -656,11 +657,13 @@ bwqs_plot = function(stanfit, parms = NULL, cri_level = 0.95, point_color="black
   summary_r = summary(stanfit$fit,pars=parms)$summary
   pointdata = data.frame(xname = summary_r[rownames(summary_r),1],
                          ypos = seq(length(rownames(summary_r)),1))
+  suppressMessages({
   stan_plot(stanfit$fit, pars = parms, point_est = "mean",
             show_density = F, show_outer_line = FALSE, ci_level = cri_level,
             fill_color = line_color) + geom_point(data = pointdata,
                                                   aes_string("xname", "ypos"),color = point_color,
                                                   shape = shape, size = size, fill = point_color)
+  })
 }
 
 
