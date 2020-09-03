@@ -113,6 +113,10 @@
 #' # WAIC
 #' bwqs_waic(fit_bwqs$fit)
 #' 
+#' # Traceplot and autocorrelation plot
+#' stan_trace(fit_bwqs$fit)
+#' stan_ac(fit_bwqs$fit)
+#' 
 #' @export
 
 bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
