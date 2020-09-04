@@ -114,8 +114,8 @@
 #' bwqs_waic(fit_bwqs$fit)
 #' 
 #' # Traceplot and autocorrelation plot
-#' stan_trace(fit_bwqs$fit)
-#' stan_ac(fit_bwqs$fit)
+#' stan_trace(fit_bwqs$fit, pars = c("beta0","beta1","W","sigma"))
+#' stan_ac(fit_bwqs$fit, pars = c("beta0","beta1","W","sigma"))
 #' 
 #' @export
 
