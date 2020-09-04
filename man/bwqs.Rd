@@ -17,7 +17,7 @@ bwqs(
   start_value = NULL,
   c_int = c(0.025, 0.975),
   family = "gaussian",
-  prior = NULL
+  prior = "None"
 )
 }
 \arguments{
@@ -57,8 +57,8 @@ interval \code{c_int = c(0.025,0.975)} (default).}
 \item{family}{A \code{string} to specify the type of outcome. Possible values are "gaussian" (default),
 "binomial" and "poisson".}
 
-\item{prior}{A \code{string} to specify the direction of prior distribution. If it is equal to NULL, 
-no direction is specified. Other options are "positive" and "negative".}
+\item{prior}{A \code{string} to specify the direction of prior distribution. Possible values are 
+"None"(default), "positive" and "negative".}
 }
 \value{
 \code{bwqs} returns a list with two argument:
@@ -139,6 +139,10 @@ bwqs_plot(fit_bwqs, parms = c("beta0","beta1","sigma"), size = 2)
 
 # WAIC
 bwqs_waic(fit_bwqs$fit)
+
+# Traceplot and autocorrelation plot
+stan_trace(fit_bwqs$fit, pars = c("beta0","beta1","W","sigma"))
+stan_ac(fit_bwqs$fit, pars = c("beta0","beta1","W","sigma"))
 
 }
 \author{
