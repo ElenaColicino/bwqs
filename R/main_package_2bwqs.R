@@ -173,7 +173,8 @@ bwqs_2 <- function(formula, mix_name_1, mix_name_2, data, q,
   if(is.null(start_value)){
     start_value = "random"
   }
-
+  
+  suppressWarnings({
   switch (family,
           gaussian = {if(!is.null(KV)){
             data_reg <- list(
@@ -287,6 +288,7 @@ bwqs_2 <- function(formula, mix_name_1, mix_name_2, data, q,
 
           }}
   )
+  })
 
   if(length(KV_name)==0){
     if(family=="gaussian"){
