@@ -769,7 +769,7 @@ bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
               C      = length(mix_name),
               K      = length(KV_name),
               cohort = as.vector(data[,cluster_name]),
-              Chem   = cbind(X),
+              Chem   = cbind(Chem),
               X      = cbind(KV),
               Dalp   = Dalp,
               y      = as.vector(data[,y_name])
@@ -795,7 +795,7 @@ bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
               J      = length(unique(data[,cluster_name])),
               C      = length(mix_name),
               cohort = as.vector(data[,cluster_name]),
-              Chem   = cbind(X),
+              Chem   = cbind(Chem),
               Dalp   = Dalp,
               y      = as.vector(data[,y_name])
             )
