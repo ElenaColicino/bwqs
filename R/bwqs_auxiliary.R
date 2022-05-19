@@ -52,7 +52,7 @@ colVars <- function(a){
 
 check_input_r <- function(formula, mix_name, cluster_name, data, q, Dalp,
                           chains, iter, thin, seed, 
-                          start_value, c_int, family, rw, SW){
+                          start_value, c_int, family){
   
   form = ifelse(class(formula) != "formula", TRUE, FALSE)
   if(form) stop("formula must be of class formula")
