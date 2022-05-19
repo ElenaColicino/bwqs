@@ -3,6 +3,7 @@
 export(bwqs)
 export(bwqs_2)
 export(bwqs_plot)
+export(bwqs_r)
 export(bwqs_waic)
 export(quantile_split)
 export(quantile_split_2)

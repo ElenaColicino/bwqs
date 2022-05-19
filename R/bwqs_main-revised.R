@@ -710,6 +710,9 @@ quantile_split_2 <- function(data, mix_name = mix_name, q){
 #' @import rstan
 #' @import Rcpp
 #' @import methods
+#'
+#' @export
+
 bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
                    chains = 1, iter = 1000, thin = 3, seed=2019, start_value=NULL,
                    c_int=c(0.025,0.975), family="gaussian"){
