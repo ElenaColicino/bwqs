@@ -28,7 +28,7 @@
 #' interval \code{c_int = c(0.025,0.975)} (default).
 #' @param family A \code{string} to specify the type of outcome. Possible values are "gaussian" (default),
 #' "binomial" and "poisson".
-#' @param prior A \code{string} to specify the direction of prior distribution. Possible values are 
+#' @param prior A \code{string} to specify the direction of prior distribution. Possible values are
 #' "None"(default), "positive" and "negative".
 #'
 #' @details
@@ -50,73 +50,6 @@
 #' @import Rcpp
 #' @import methods
 #'
-#' @examples
-#' #load libraries
-#' library(MASS)
-#' library(BWQS)
-#'
-#' # fix the seed
-#' set.seed(1234)
-#'
-#' # Sample sizes
-#' N <- 1000
-#'
-#' # Mean & SD of variables
-#' mu <- c(0,0,0,1,3)
-#' sd <- c(1,1,1,3,1)
-#' sd2 <- sd %*% t(sd)
-#'
-#' # Correlation Matrix
-#' rho <- 0.65
-#' corMat <- cbind(c(1,rho,rho^2,rho^2,rho^2),
-#'                 c(rho,1,rho^2, rho^2, rho^2),
-#'                 c(rho^2,rho^2,1,rho^2,rho^2),
-#'                 c(rho^2,rho^2,rho^2,1, rho),
-#'                 c(rho^2,rho^2,rho^2,rho,1))
-#'
-#' # Covariance Matrix
-#' Sigma <- sd2*corMat
-#'
-#' # Simulating three correlated exposure variables
-#' X <- as.data.frame(mvrnorm(N, mu=mu, Sigma = Sigma, empirical=TRUE))
-#' colnames(X)<-c("X1","X2","X3","X4","X5")
-#'
-#' # Quantile extraction
-#' Xq <- as.matrix(quantile_split(X, mix_name = colnames(X), q=4))
-#'
-#' # Intercept coefficient
-#' beta0 <- 2
-#'
-#' # Overall effect
-#' beta1 <- 0.8
-#'
-#' # Weights
-#' W <- c(0.5,0.20,0.2,0.05,0.05)
-#'
-#' # sigma of the model
-#' sigma <- 1
-#'
-#' # Outcome simulation (continuos)
-#' y <- rnorm(N, beta0 + beta1*(Xq %*% W), sd = sigma)
-#'
-#' # Aggregate data in a data.frame
-#' Data <-as.data.frame(cbind(y,X))
-#'
-#' fit_bwqs <- bwqs(y ~ NULL, mix_name = c("X1","X2","X3","X4","X5"),
-#'                  data = Data, q=4, c_int = c(0.1,0.9), seed = NULL)
-#' fit_bwqs$summary_fit
-#'
-#' # Plots of weights and parameters
-#' bwqs_plot(fit_bwqs, parms = "W", size = 2)
-#' bwqs_plot(fit_bwqs, parms = c("beta0","beta1","sigma"), size = 2)
-#'
-#' # WAIC
-#' bwqs_waic(fit_bwqs$fit)
-#' 
-#' # Traceplot and autocorrelation plot
-#' stan_trace(fit_bwqs$fit, pars = c("beta0","beta1","W","sigma"))
-#' stan_ac(fit_bwqs$fit, pars = c("beta0","beta1","W","sigma"))
-#' 
 #' @export
 
 bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
@@ -164,11 +97,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
   if(is.null(start_value)){
     start_value = "random"
   }
-  
+
   suppressWarnings({
   switch (family,
           gaussian = {if(!is.null(KV)){
-            
+
             data_reg <- list(
               N = nrow(data),
               C = length(mix_name),
@@ -178,9 +111,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
               Dalp = Dalp,
               y = as.vector(data[,y_name])
             )
-            
+
             if(prior == "None"){
-              
+
             fit <- stan(model_code = model_bwqs_regression_cov,
                         data = data_reg,
                         init = start_value,
@@ -194,11 +127,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                         seed = seed,
                         control=list(max_treedepth = 20,
                                      adapt_delta = 0.999999999999999))
-            
+
             } else{
-              
+
               if(prior == "positive"){
-                
+
                 fit <- stan(model_code = model_bwqs_regression_cov_positive,
                             data = data_reg,
                             init = start_value,
@@ -212,9 +145,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             seed = seed,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
-                
+
               } else{
-                
+
                 fit <- stan(model_code = model_bwqs_regression_cov_negative,
                             data = data_reg,
                             init = start_value,
@@ -228,7 +161,7 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             seed = seed,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
-                
+
               }
             }
 
@@ -240,9 +173,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
               Dalp = Dalp,
               y = as.vector(data[,y_name])
             )
-            
+
             if(prior == "None"){
-              
+
               fit <- stan(model_code = model_bwqs_regression,
                           data = data_reg,
                           init = start_value,
@@ -256,11 +189,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                           seed = seed,
                           control=list(max_treedepth = 20,
                                        adapt_delta = 0.999999999999999))
-            
+
             } else{
-              
+
               if(prior == "positive"){
-                
+
                 fit <- stan(model_code = model_bwqs_regression_positive,
                             data = data_reg,
                             init = start_value,
@@ -275,7 +208,7 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
               } else{
-                
+
                 fit <- stan(model_code = model_bwqs_regression_negative,
                             data = data_reg,
                             init = start_value,
@@ -291,7 +224,7 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                                          adapt_delta = 0.999999999999999))
               }
             }
-            
+
           }},
 
           binomial = {if(!is.null(KV)){
@@ -304,9 +237,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
               Dalp = Dalp,
               y = as.vector(data[,y_name])
             )
-            
+
             if(prior == "None"){
-              
+
               fit <- stan(model_code = model_bwqs_logit_cov,
                           data = data_reg,
                           init = start_value,
@@ -320,11 +253,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                           seed = seed,
                           control=list(max_treedepth = 20,
                                        adapt_delta = 0.999999999999999))
-              
+
             } else{
-              
+
               if(prior == "positive"){
-                
+
                 fit <- stan(model_code = model_bwqs_logit_cov_positive,
                             data = data_reg,
                             init = start_value,
@@ -338,9 +271,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             seed = seed,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
-                
+
               } else{
-                
+
                 fit <- stan(model_code = model_bwqs_logit_cov_negative,
                             data = data_reg,
                             init = start_value,
@@ -354,10 +287,10 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             seed = seed,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
-                
+
               }
             }
-            
+
 
           } else{
             data_reg <- list(
@@ -367,9 +300,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
               Dalp = Dalp,
               y = as.vector(data[,y_name])
             )
-            
+
             if(prior == "None"){
-              
+
               fit <- stan(model_code = model_bwqs_logit,
                           data = data_reg,
                           init = start_value,
@@ -383,11 +316,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                           seed = seed,
                           control=list(max_treedepth = 20,
                                        adapt_delta = 0.999999999999999))
-              
+
             } else{
-              
+
               if(prior == "positive"){
-                
+
                 fit <- stan(model_code = model_bwqs_logit_positive,
                             data = data_reg,
                             init = start_value,
@@ -402,7 +335,7 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
               } else{
-                
+
                 fit <- stan(model_code = model_bwqs_logit_negative,
                             data = data_reg,
                             init = start_value,
@@ -418,10 +351,10 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                                          adapt_delta = 0.999999999999999))
               }
             }
-          
+
 
           }},
-          
+
           poisson = {if(!is.null(KV)){
             data_reg <- list(
               N = nrow(data),
@@ -432,9 +365,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
               Dalp = Dalp,
               y = as.vector(data[,y_name])
             )
-            
+
             if(prior == "None"){
-              
+
               fit <- stan(model_code = model_bwqs_poisson_cov,
                           data = data_reg,
                           init = start_value,
@@ -448,11 +381,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                           seed = seed,
                           control=list(max_treedepth = 20,
                                        adapt_delta = 0.999999999999999))
-              
+
             } else{
-              
+
               if(prior == "positive"){
-                
+
                 fit <- stan(model_code = model_bwqs_poisson_cov_positive,
                             data = data_reg,
                             init = start_value,
@@ -466,9 +399,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             seed = seed,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
-                
+
               } else{
-                
+
                 fit <- stan(model_code = model_bwqs_poisson_cov_negative,
                             data = data_reg,
                             init = start_value,
@@ -482,11 +415,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             seed = seed,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
-                
+
               }
             }
-            
-            
+
+
           } else{
             data_reg <- list(
               N = nrow(data),
@@ -495,9 +428,9 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
               Dalp = Dalp,
               y = as.vector(data[,y_name])
             )
-            
+
             if(prior == "None"){
-              
+
               fit <- stan(model_code = model_bwqs_poisson,
                           data = data_reg,
                           init = start_value,
@@ -511,11 +444,11 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                           seed = seed,
                           control=list(max_treedepth = 20,
                                        adapt_delta = 0.999999999999999))
-              
+
             } else{
-              
+
               if(prior == "positive"){
-                
+
                 fit <- stan(model_code = model_bwqs_poisson_positive,
                             data = data_reg,
                             init = start_value,
@@ -530,7 +463,7 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                             control=list(max_treedepth = 20,
                                          adapt_delta = 0.999999999999999))
               } else{
-                
+
                 fit <- stan(model_code = model_bwqs_poisson_negative,
                             data = data_reg,
                             init = start_value,
@@ -546,10 +479,10 @@ bwqs <- function(formula, mix_name, data, q, Dalp = NULL,
                                          adapt_delta = 0.999999999999999))
               }
             }
-            
-            
+
+
           }}
-          
+
   )})
 
   if(length(KV_name)==0){
@@ -707,8 +640,8 @@ quantile_split <- function(data, mix_name = mix_name, q, shift=TRUE){
 
 #' Quantile function for BWQS with continuous data
 #'
-#' This function allows quantile splitting (empirical cumulative function) 
-#' for BWQS model.  
+#' This function allows quantile splitting (empirical cumulative function)
+#' for BWQS model.
 #' @param data A \code{data.frame} where the columns have the name of
 #' the mixture components.
 #' @param mix_name A character list of components that have been
@@ -735,9 +668,9 @@ quantile_split_2 <- function(data, mix_name = mix_name, q){
 #' covariates of the model not involved in the mixture variable. If the model has no covariates specify
 #' \code{y ~ NULL}.
 #' @param mix_name A character vector listing the variables contributing to a mixture effect.
-#' @param cluster_name A character string that specifiy which is the column of the dataset which 
+#' @param cluster_name A character string that specifiy which is the column of the dataset which
 #' contains the group number. Note that the \code{cluster_name} should be numeric, strings and factors
-#' are not allowed 
+#' are not allowed
 #' @param data The \code{data.frame} containing the variables (covariates and elements of the mixture)
 #' to be included in the model.
 #' @param q An \code{integer} to specify how mixture variables will be ranked, e.g. in quartiles
@@ -756,8 +689,8 @@ quantile_split_2 <- function(data, mix_name = mix_name, q){
 #' if it is equal to NULL random values are chosen.
 #' @param c_int A \code{vector} of two elements to specify the credible intervals for parameters, for 95% credible
 #' interval \code{c_int = c(0.025,0.975)} (default).
-#' @param family A \code{string} to specify the type of outcome. With the current implementation  the 
-#' possible values are only continuous - "gaussian" (default). 
+#' @param family A \code{string} to specify the type of outcome. With the current implementation  the
+#' possible values are only continuous - "gaussian" (default).
 #'
 #' @details
 #' The function \code{bwqs} uses the package \code{rstan} which allows the connection with STAN,
@@ -780,51 +713,51 @@ quantile_split_2 <- function(data, mix_name = mix_name, q){
 bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
                    chains = 1, iter = 1000, thin = 3, seed=2019, start_value=NULL,
                    c_int=c(0.025,0.975), family="gaussian"){
-  
+
   formula = as.formula(formula)
   y_name  <- all.vars(formula)[1]
   KV_name <- all.vars(formula)[-1]
   X_name  <- mix_name
-  
+
   check_input_r(formula, mix_name, cluster_name, data, q, Dalp,
                 chains, iter, thin, seed,
                 start_value, c_int, family)
-  
+
   if(length(KV_name)==0){
     data = as.data.frame(data[,c(y_name,X_name,cluster_name)])
-  } else{ 
+  } else{
     data = as.data.frame(data[,c(y_name,KV_name,X_name,cluster_name)])
   }
-  
+
   data <- na.omit(data)
   if(nrow(data)==0) stop("No dataset available")
-  
+
   if(is.null(q)){
     Chem = data[,mix_name]
   } else{
     Chem = quantile_split_2(data=data,mix_name=mix_name,q)[,mix_name]
   }
-  
+
   if(length(KV_name)==0){
     KV = NULL
-  } else{ 
+  } else{
     KV = data[,KV_name]
   }
-  
+
   if(is.null(Dalp)){
     Dalp = rep(1, length(mix_name))
   } else{
     Dalp = Dalp
   }
-  
+
   if(is.null(start_value)){
     start_value = "random"
-  } 
-  
+  }
+
   if(!(cluster_name %in% colnames(data))){
     stop("Cluster specification not found")
   }
-  
+
   switch (family,
           gaussian = {if(!is.null(KV)){
             data_reg <- list(
@@ -838,21 +771,21 @@ bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
               Dalp   = Dalp,
               y      = as.vector(data[,y_name])
             )
-            
-            fit <- stan(model_code = model_rbwqs_regression_cov,        
+
+            fit <- stan(model_code = model_rbwqs_regression_cov,
                         data = data_reg,
                         init = start_value,
-                        chains = 1,                           
-                        warmup = iter/2,                        
-                        iter = iter,                         
-                        cores = 1,                            
-                        thin = thin,                             
-                        refresh = 0,                          
-                        algorithm = 'NUTS',                    
+                        chains = 1,
+                        warmup = iter/2,
+                        iter = iter,
+                        cores = 1,
+                        thin = thin,
+                        refresh = 0,
+                        algorithm = 'NUTS',
                         seed = seed,
                         control=list(max_treedepth = 20,
                                      adapt_delta = 0.999999999999999))
-            
+
           } else{
             data_reg <- list(
               N      = nrow(data),
@@ -863,25 +796,25 @@ bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
               Dalp   = Dalp,
               y      = as.vector(data[,y_name])
             )
-            
-            fit <- stan(model_code = model_rbwqs_regression,        
+
+            fit <- stan(model_code = model_rbwqs_regression,
                         data = data_reg,
                         init = start_value,
-                        chains = 1,                           
-                        warmup = iter/2,                        
-                        iter = iter,                         
-                        cores = 1,                            
-                        thin = thin,                             
-                        refresh = 0,                          
-                        algorithm = 'NUTS',                    
+                        chains = 1,
+                        warmup = iter/2,
+                        iter = iter,
+                        cores = 1,
+                        thin = thin,
+                        refresh = 0,
+                        algorithm = 'NUTS',
                         seed = seed,
                         control=list(max_treedepth = 20,
                                      adapt_delta = 0.999999999999999))
-            
+
           }}
-          
+
   )
-  
+
   if(length(KV_name)!=0){
       parameters <- c(paste0('W_',mix_name),
                       "sigma",
@@ -898,7 +831,7 @@ bwqs_r <- function(formula, mix_name, cluster_name, data, q, Dalp = NULL,
                       paste0('beta0_',seq(1,length(unique(data[,cluster_name])))),
                       paste0('beta1_',seq(1,length(unique(data[,cluster_name])))))
     }
-  
+
   names(fit)[1:length(parameters)] <- parameters
   sum_fit <- round(summary(fit,pars = parameters,
                            probs = c_int)$summary,5)

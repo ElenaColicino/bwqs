@@ -56,7 +56,7 @@ of the second mixture.}
 \item{start_value}{A \code{vector} containing the initial value of the prior distribution,
 if it is equal to NULL random values are chosen.}
 
-\item{c_int}{A \code{vector} of two elements to specify the credible intervals for parameters, for 95% credible
+\item{c_int}{A \code{vector} of two elements to specify the credible intervals for parameters, for 95\% credible
 interval \code{c_int = c(0.025,0.975)} (default).}
 
 \item{family}{A \code{string} to specify the type of outcome. Possible values are "gaussian" (default) and
@@ -64,11 +64,11 @@ interval \code{c_int = c(0.025,0.975)} (default).}
 }
 \value{
 \code{bwqs} returns a list with two argument:
- \item{fit}{An \code{S4} object with all details of the Hamiltonian Monte Carlo, all the extractions
- from the posterior distribution and all values of the parameters}
- \item{summary_fit}{Table with the statistics of the parameters: mean, standard error of the mean,
-   standard deviation, lower and upper values for the credible interval (with credible level specified
-   by \code{c_int}), n_eff and Rhat. For further details see https://cran.r-project.org/web/packages/rstan/rstan.pdf}
+\item{fit}{An \code{S4} object with all details of the Hamiltonian Monte Carlo, all the extractions
+from the posterior distribution and all values of the parameters}
+\item{summary_fit}{Table with the statistics of the parameters: mean, standard error of the mean,
+standard deviation, lower and upper values for the credible interval (with credible level specified
+by \code{c_int}), n_eff and Rhat. For further details see https://cran.r-project.org/web/packages/rstan/rstan.pdf}
 }
 \description{
 Fits Bayesian Weighted Quantile Sum (BWQS) regressions for continuous and binomial outcomes with
