@@ -11,3 +11,5 @@ library(BWQS)
 
 For additional information on the BWQS regression please read this paper:
 https://pubmed.ncbi.nlm.nih.gov/32613152/.
+
+Update: the function `bwqs_r` for the *Hierarchical Bayesian Bayesian Weighted Quantile Sum* has been added to the package.  
