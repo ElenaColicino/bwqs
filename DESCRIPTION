@@ -1,10 +1,12 @@
 Package: BWQS
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Bayesian Weighted Quantile Sum Regression
+Version: 1.0.0
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("Nicolo", "Foppa Pedretti", ,"nicolo.foppapedretti@mssm.edu", 
+    role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: This package fits Bayesian Weighted Quantile Sums regression for continuous and binomial outcomes
+             with one mixture of different elements.
 License: MIT
 Encoding: UTF-8
 LazyData: true
@@ -16,4 +18,5 @@ Imports:
     rstan,
     ggplot2,
     methods,
-    Rcpp
+    Rcpp,
+    stats
