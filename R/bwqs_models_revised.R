@@ -618,7 +618,7 @@ log_lik[j] = poisson_lpmf(y[j] | mu[j]);
 }
 "
 
-#' @export
+
 model_rbqws_regression_cov <-  "
 data {
   int<lower=0> N;
@@ -671,7 +671,6 @@ log_lik[nn] = normal_lpdf(y[nn]| mu[nn], sigma);
 }
 "
 
-#' @export
 model_rbqws_regression <- "
 data {
   int<lower=0> N;
