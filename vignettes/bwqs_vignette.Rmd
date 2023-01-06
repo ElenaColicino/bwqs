@@ -106,12 +106,10 @@ The following plots summarize the results: estimates and 95% credible intervals.
 
 ```{r plots}
 a = bwqs_plot(fit_bwqs, parms = "W", size = 2)
-a
 ```
 
 ```{r plots1}
 b = bwqs_plot(fit_bwqs, parms = c("beta0","beta1",'delta',"sigma"), size = 2)
-b
 ```
 
 The `bwqs_waic` function evaluates the goodness of fit for the BWQS model. Several measures are included in the function. For further details: http://www.stat.columbia.edu/~gelman/research/unpublished/waic_stan.  
