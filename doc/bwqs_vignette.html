@@ -470,12 +470,8 @@ be plotted: <code>beta0</code> and <code>beta1</code> for the main
 parameters of the model, <code>W</code> for the weights and
 <code>delta</code> for the covariates. The <code>size</code> identifies
 the magnitude of the means dots.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">bwqs_plot</span>(fit_bwqs, <span class="at">parms =</span> <span class="st">&quot;W&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>a</span></code></pre></div>
-<p><img src="\mssm3/mssm3$/foppan01/Project_GitHub/bwqs/vignettes/bwqs_vignette_files/figure-html/plots-1.png" /><!-- --></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">=</span> <span class="fu">bwqs_plot</span>(fit_bwqs, <span class="at">parms =</span> <span class="fu">c</span>(<span class="st">&quot;beta0&quot;</span>,<span class="st">&quot;beta1&quot;</span>,<span class="st">&#39;delta&#39;</span>,<span class="st">&quot;sigma&quot;</span>), <span class="at">size =</span> <span class="dv">2</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>b</span></code></pre></div>
-<p><img src="\mssm3/mssm3$/foppan01/Project_GitHub/bwqs/vignettes/bwqs_vignette_files/figure-html/plots1-1.png" /><!-- --></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">=</span> <span class="fu">bwqs_plot</span>(fit_bwqs, <span class="at">parms =</span> <span class="st">&quot;W&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>b <span class="ot">=</span> <span class="fu">bwqs_plot</span>(fit_bwqs, <span class="at">parms =</span> <span class="fu">c</span>(<span class="st">&quot;beta0&quot;</span>,<span class="st">&quot;beta1&quot;</span>,<span class="st">&#39;delta&#39;</span>,<span class="st">&quot;sigma&quot;</span>), <span class="at">size =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p>The <code>bwqs_waic</code> function evaluates the goodness of fit for
 the BWQS model. Several measures are included in the function. For
 further details: <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/waic_stan" class="uri">http://www.stat.columbia.edu/~gelman/research/unpublished/waic_stan</a>.</p>

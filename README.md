@@ -6,9 +6,17 @@ In order to run the model, install Rtools (see the version of Rtools for your sp
 on your machine and run the following command on your console: 
 
 ```
-devtools::install_github("ElenaColicino/bwqs")
+devtools::install_github("ElenaColicino/bwqs", build_vignettes = TRUE)
 library(BWQS)
 ```
+
+The additional argument `build_vignettes = TRUE` allows the package to build the vignette with all the examples. In order to read the vignette in your browser type:
+
+```
+browseVignettes("BWQS")
+```
+
+## Resources
 
 For additional information on the BWQS regression please read this paper:
 https://pubmed.ncbi.nlm.nih.gov/32613152/.
