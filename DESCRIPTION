@@ -1,18 +1,22 @@
 Package: BWQS
-Type: Package
 Title: Bayesian Weighted Quantile Sum Regression
 Version: 1.0.0
-Author: Nicolo Foppa Pedretti, Elena Colicino
-Maintainer: Nicolo Foppa pedretti <nicolo.foppapedretti@mssm.edu>
+Authors@R: 
+    person("Nicolo", "Foppa Pedretti", ,"nicolo.foppapedretti@mssm.edu", 
+    role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: This package fits Bayesian Weighted Quantile Sums regression for continuous and binomial outcomes
              with one mixture of different elements.
-License: GPL (>= 2)
+License: MIT
 Encoding: UTF-8
-Depends: Rcpp, methods, rstan, ggplot2
-Imports: MASS, Matrix, Rcpp, methods, rstan, ggplot2
 LazyData: true
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Suggests: knitr, rmarkdown
-VignetteBuilder: knitr
-NeedsCompilation: no
-Packaged: 2020-07-17 21:14:44 UTC; apple
+Imports:
+    Matrix,
+    MASS,
+    rstan,
+    ggplot2,
+    methods,
+    Rcpp,
+    stats
