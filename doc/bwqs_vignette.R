@@ -64,7 +64,7 @@ y = rnorm(N, beta0 + beta1*(Xq %*% W) + D %*% delta, sd = sigma)
 # Aggregate data in a data.frame
 Data = as.data.frame(cbind(y,X,D))
 
-Data
+head(round(Data,3))
 
 ## -----------------------------------------------------------------------------
 # we run the model ans save results in "fit_bwqs" variable

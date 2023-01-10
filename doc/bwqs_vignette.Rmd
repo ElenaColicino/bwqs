@@ -94,7 +94,7 @@ y = rnorm(N, beta0 + beta1*(Xq %*% W) + D %*% delta, sd = sigma)
 # Aggregate data in a data.frame
 Data = as.data.frame(cbind(y,X,D))
 
-Data
+head(round(Data,3))
 ```
 
 Now that we have the dataset we can fit the **BWQS** model with the following code: 
