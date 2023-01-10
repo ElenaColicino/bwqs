@@ -458,6 +458,65 @@ further details check <a href="http://www.stat.columbia.edu/~gelman/research/unp
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; $p_loo</span></span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    p_loo </span></span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 8.771992</span></span></code></pre></div>
+<p>The <code>bwqs</code> function allows the user to fit model even with
+different type of outcomes like <strong>binary</strong> or
+<strong>poisson</strong>. In order to fit model with different outcomes
+we should specify the <code>family</code> parameter in the
+<code>bwqs</code> function, this parameter can be
+<code>&quot;binomial&quot;</code> or <code>&quot;poisson&quot;</code> based on the outcome
+that we want to use to build our model. Note that <em>binomial</em> only
+allows <span class="math inline">\(\{0,1\}\)</span> values while
+<em>poisson</em> allows integer number; in both cases the
+misspecification of the values will lead to errors.</p>
+<p>Another important feature of <code>bwqs</code> function is the
+possibility to set the direction of the prior of the <span class="math inline">\(\beta_1\)</span> coefficient (the coefficient that
+explain the effect of the mixture). Developing model can happen that we
+have prior strong information on the constraint that the <span class="math inline">\(\beta_1\)</span> can have, in this case we only
+have to specify the parameter <code>prior</code>. The default value is
+<code>&quot;None&quot;</code> but it allows also <code>&quot;positive&quot;</code> and
+<code>&quot;negative&quot;</code> based on the assumptions that we have on the
+overall effect of the mixture.</p>
+</div>
+<div id="hierarchical-bayesian-quantile-weighted-sums" class="section level2">
+<h2>Hierarchical Bayesian Quantile Weighted Sums</h2>
+<p>Here an example for the regression model:</p>
+<p><span class="math display">\[\begin{gather*}
+Y_{i} \sim \mathcal{N}( \alpha_{j[i]} + \beta_{j[i]}BWQS_{i} + \gamma
+Z_{i}, \sigma_c) \quad where  \quad BWQS_{i} =  \sum_{k=1}^K x_{ik}w_k
+\\
+\alpha \sim \mathcal{N}( \mu_{\alpha},\sigma_{\alpha}), \quad \beta \sim
+\mathcal{N}( \mu_{\beta},\sigma_{\beta}) \quad where:
+\\  \begin{pmatrix} \mu_{\alpha} \\ \mu_{\beta} \end{pmatrix}  \sim
+\mathcal{N}_2\left( \begin{pmatrix} 0 \\ 0 \end{pmatrix},
+\begin{bmatrix} 100 &amp;&amp; 0 \\ 0 &amp;&amp; 100
+\end{bmatrix}  \right) \quad and  \quad  \sigma_{\alpha},\sigma_{\beta}
+\sim \mathcal{IG}(0.01,0.01) \\
+\sigma_c \sim \mathcal{IG}(0.01,0.01), \quad w \sim
+\mathcal{Dir}_k((1,\ldots,1)) \quad and  \quad \gamma \sim
+\mathcal{N}_{z} \left( \begin{pmatrix} 0 \\ \vdots \\ 0 \end{pmatrix}
+,\begin{bmatrix} 100 &amp;&amp; \\ &amp; \ddots &amp; \\ &amp;&amp; 100
+\end{bmatrix} \right) \
+\end{gather*}\]</span></p>
+<p>Notation:</p>
+<ul>
+<li><span class="math inline">\(i = 1, \ldots,N\)</span> is the number
+of total observations</li>
+<li><span class="math inline">\(j = 1, \ldots,J\)</span> is the number
+of total cohorts</li>
+<li><span class="math inline">\(j[i]\)</span> defines the cohort effect
+for each observation (random terms)</li>
+<li><span class="math inline">\(K\)</span> number of chemicals involved
+in the mixture</li>
+<li><span class="math inline">\(Z\)</span> number of covariates</li>
+<li><span class="math inline">\(\mathcal{IG}\)</span> is a <a href="https://en.wikipedia.org/wiki/Inverse-gamma_distribution">Inverse
+Gamma Distribution</a></li>
+<li><span class="math inline">\(\mathcal{Dir}_k\)</span> is a <a href="https://en.wikipedia.org/wiki/Dirichlet_distribution">Dirichlet
+Distribution</a> parametrized by a k-dimensional vector of 1<br />
+</li>
+<li><span class="math inline">\(\mathcal{N}_z\)</span> is a
+z-dimensional <a href="https://en.wikipedia.org/wiki/Multivariate_normal_distribution">Multivariate
+Normal Distibution</a></li>
+</ul>
 </div>
 
 

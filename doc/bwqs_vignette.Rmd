@@ -129,5 +129,29 @@ The `bwqs_waic` function evaluates the goodness of fit for the BWQS model. Sever
 bwqs_waic(fit_bwqs$fit)
 ```
 
+The `bwqs` function allows the user to fit model even with different type of outcomes like **binary** or **poisson**. In order to fit model with different outcomes we should specify the `family` parameter in the `bwqs` function, this parameter can be `"binomial"` or `"poisson"` based on the outcome that we want to use to build our model. Note that *binomial* only allows $\{0,1\}$ values while *poisson* allows integer number; in both cases the misspecification of the values will lead to errors.
+
+Another important feature of `bwqs` function is the possibility to set the direction of the prior of the $\beta_1$ coefficient (the coefficient that explain the effect of the mixture). Developing model can happen that we have prior strong information on the constraint that the $\beta_1$ can have, in this case we only have to specify the parameter `prior`. The default value is `"None"` but it allows also `"positive"` and `"negative"` based on the assumptions that we have on the overall effect of the mixture.
+
+## Hierarchical Bayesian Quantile Weighted Sums
+
+Here an example for the regression model:
+
+$$\begin{gather*} 
+Y_{i} \sim \mathcal{N}( \alpha_{j[i]} + \beta_{j[i]}BWQS_{i} + \gamma Z_{i}, \sigma_c) \quad where  \quad BWQS_{i} =  \sum_{k=1}^K x_{ik}w_k \\ 
+\alpha \sim \mathcal{N}( \mu_{\alpha},\sigma_{\alpha}), \quad \beta \sim \mathcal{N}( \mu_{\beta},\sigma_{\beta}) \quad where: \\  \begin{pmatrix} \mu_{\alpha} \\ \mu_{\beta} \end{pmatrix}  \sim \mathcal{N}_2\left( \begin{pmatrix} 0 \\ 0 \end{pmatrix}, \begin{bmatrix} 100 && 0 \\ 0 && 100 \end{bmatrix}  \right) \quad and  \quad  \sigma_{\alpha},\sigma_{\beta} \sim \mathcal{IG}(0.01,0.01) \\ 
+\sigma_c \sim \mathcal{IG}(0.01,0.01), \quad w \sim \mathcal{Dir}_k((1,\ldots,1)) \quad and  \quad \gamma \sim \mathcal{N}_{z} \left( \begin{pmatrix} 0 \\ \vdots \\ 0 \end{pmatrix} ,\begin{bmatrix} 100 && \\ & \ddots & \\ && 100 \end{bmatrix} \right) \
+\end{gather*}$$
+
+Notation:
+
++ $i = 1, \ldots,N$ is the number of total observations
++ $j = 1, \ldots,J$ is the number of total cohorts
++ $j[i]$ defines the cohort effect for each observation (random terms)
++ $K$ number of chemicals involved in the mixture
++ $Z$ number of covariates
++ $\mathcal{IG}$ is a [Inverse Gamma Distribution](https://en.wikipedia.org/wiki/Inverse-gamma_distribution)
++ $\mathcal{Dir}_k$ is a [Dirichlet Distribution](https://en.wikipedia.org/wiki/Dirichlet_distribution) parametrized by a k-dimensional vector of 1  
++ $\mathcal{N}_z$ is a z-dimensional [Multivariate Normal Distibution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution)
 
 
