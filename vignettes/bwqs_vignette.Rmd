@@ -28,8 +28,11 @@ The algorithms are applied to a simulated dataset and all the steps are listed i
 
 ```{r setup}
 library(BWQS)
+library(rstan)
 library(MASS)
 library(knitr)
+library(clusterGeneration)
+library(kableExtra)
 ```
 
 ## Bayesian Quantile Weighted Sums
@@ -110,7 +113,9 @@ The first function object is the underlying model, i.e. formula `y ~ cov1 + cov2
 Results are saved in the `fit_bwqs` object, which can be used to plot the results. In the results table: the first two columns are the mean and the standard deviation of the mean, the two following columns contain the values of the credible interval at 95%. The credible interval level can be chosen using the `c_int` parameter. The last two columns report values to evaluate the fitness of parameters and the convergence of the algorithm. 
  
 ```{r tables}
-fit_bwqs$summary_fit
+fit_bwqs$summary_fit %>%
+  kbl() %>%
+  kable_classic(full_width = F, html_font = "Cambria")
 ```
 
 The following plots summarize the results: estimates and 95% credible intervals. The first object of the function contains the results of the model. `parms` is a vector with the name of the variables to be plotted: `beta0` and `beta1` for the main parameters of the model, `W` for the weights and `delta` for the covariates. The `size` identifies the magnitude of the means dots.
@@ -154,4 +159,77 @@ Notation:
 + $\mathcal{Dir}_k$ is a [Dirichlet Distribution](https://en.wikipedia.org/wiki/Dirichlet_distribution) parametrized by a k-dimensional vector of 1  
 + $\mathcal{N}_z$ is a z-dimensional [Multivariate Normal Distibution](https://en.wikipedia.org/wiki/Multivariate_normal_distribution)
 
+The HBWQS frameworks is pretty similar to the BWQS. The main different is the flexibility on multiple cohorts. In order to specify the cohort we need to use and additional parameter `cohort` which is a vector of integer that needs to point every observation to the specific cohort. 
+
+We generate a synthetic dataset to test the **HBWQS** model: we want **5** different cohorts with **250**,**200**,**150**,**100**,**100** people for each cohort. We choose **4** chemical for the mixture and we are using quartiles. Note that **STAN** doesn't allow factors so we have to re-map the categorical variables into dummy variables (excluding the reference value). The index of cohort should be an integer starting from 1 and we'll specify the column name in code. Here the synthetic dataset:  
+
+```{r hbwqs_dataset, echo=FALSE}
+set.seed(1990)
+N = c(250,150,100,100,200)
+C = 4
+names_ch = paste0("Ch_",1:C)
+# Mean and variance of each chemical
+mu <- rnorm(C)
+sd <- runif(C,0,0.2)
+sd2 <- sd %*% t(sd)
+
+# Correlation Matrix
+corMat = rcorrmatrix(C,alphad=1)
+
+# Simulating three correlated exposure varMatrix
+Sigma <- sd2*corMat
+X <- as.data.frame(mvrnorm(sum(N), mu=mu, Sigma = Sigma, empirical=TRUE))
+colnames(X)<-names_ch
+
+# Quantile transformation
+Xq = matrix(NA,sum(N),C)
+for(i in 1:C) Xq[,i] = ecdf(X[[names_ch[i]]])(X[[names_ch[i]]])*4
+
+beta0_1 = 0.65           # intercept 1st cohort
+beta1_1 = (-1.7)         # slope 1st cohort
+beta0_2 = -0.38          # intercept 2nd cohort
+beta1_2 = -0.94          # slope 2nd cohort
+beta0_3 = 0.15           # intercept 3rd cohort
+beta1_3 = -0.11          # slope 3rd cohort
+beta0_4 = (-0.98)        # intercept 4th cohort
+beta1_4 = -1.45          # slope 4th cohort
+beta0_5 = 1.13           # intercept 5th cohort
+beta1_5 = -1.88          # slope 5th cohort
+W = c(0.1,0.4,0.3,0.2)   # weights
+sigma = 1                # sigma
+
+K = cbind(runif(sum(N),20,40),
+        rbinom(sum(N),1,prob = 0.5),
+        runif(sum(N),11,18))
+colnames(K) = c("m_age","sex","education")
+d = c(-0.4,0.5,0.2)
+
+Nh = cumsum(N)
+y1 = rnorm(N[1], beta0_1 + beta1_1 * (Xq %*% W)[1:Nh[1]] + (K %*% d)[1:Nh[1]],sigma)
+y2 = rnorm(N[2], beta0_2 + beta1_2 * (Xq %*% W)[(Nh[1]+1):Nh[2]] + (K %*% d)[(Nh[1]+1):Nh[2]],sigma)
+y3 = rnorm(N[3], beta0_3 + beta1_3 * (Xq %*% W)[(Nh[2]+1):Nh[3]] + (K %*% d)[(Nh[2]+1):Nh[3]],sigma)
+y4 = rnorm(N[4], beta0_4 + beta1_4 * (Xq %*% W)[(Nh[3]+1):Nh[4]] + (K %*% d)[(Nh[3]+1):Nh[4]],sigma)
+y5 = rnorm(N[5], beta0_5 + beta1_5 * (Xq %*% W)[(Nh[4]+1):Nh[5]] + (K %*% d)[(Nh[4]+1):Nh[5]],sigma)
+
+dt = data.frame(y = c(y1,y2,y3,y4,y5), K, X,
+                cohort = rep(c(1,2,3,4,5),N))
+head(round(dt,3))
+```
+
+Now that we have the dataset we can fit the **HBWQS** model with the following code: 
+
+```{r}
+# we run the model ans save results in "fit_bwqs" variable
+fit_hbwqs = bwqs_r(y ~ m_age + sex + education, 
+                   mix_name = c("Ch_1","Ch_2","Ch_3","Ch_4"),
+                   cluster_name = "cohort", Dalp = rep(1,4),
+                   iter = 10000, thin = 3, data = dt, 
+                   q = 4, family = "gaussian")
+```
+
+```{r hbwqs_results}
+fit_hbwqs$summary_fit %>%
+  kbl() %>%
+  kable_classic(full_width = F, html_font = "Cambria")
+```
 
