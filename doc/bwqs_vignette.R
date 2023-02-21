@@ -80,10 +80,10 @@ fit_bwqs$summary_fit %>%
   kable_classic(full_width = F, html_font = "Cambria")
 
 ## ----plots--------------------------------------------------------------------
-bwqs_plot(fit_bwqs, parms = "W", size = 2)
+# bwqs_plot(fit_bwqs, parms = "W", size = 2)
 
 ## ----plots1-------------------------------------------------------------------
-bwqs_plot(fit_bwqs, parms = c("beta0","beta1",'delta',"sigma"), size = 2)
+# bwqs_plot(fit_bwqs, parms = c("beta0","beta1",'delta',"sigma"), size = 2)
 
 ## ----waic---------------------------------------------------------------------
 bwqs_waic(fit_bwqs$fit)
@@ -141,7 +141,7 @@ dt = data.frame(y = c(y1,y2,y3,y4,y5), K, X,
 head(round(dt,3))
 
 ## -----------------------------------------------------------------------------
-# we run the model ans save results in "fit_bwqs" variable
+# we run the model ans save results in "fit_hbwqs" variable
 fit_hbwqs = bwqs_r(y ~ m_age + sex + education, 
                    mix_name = c("Ch_1","Ch_2","Ch_3","Ch_4"),
                    cluster_name = "cohort", Dalp = rep(1,4),

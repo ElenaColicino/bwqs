@@ -121,11 +121,11 @@ fit_bwqs$summary_fit %>%
 The following plots summarize the results: estimates and 95% credible intervals. The first object of the function contains the results of the model. `parms` is a vector with the name of the variables to be plotted: `beta0` and `beta1` for the main parameters of the model, `W` for the weights and `delta` for the covariates. The `size` identifies the magnitude of the means dots.
 
 ```{r plots}
-bwqs_plot(fit_bwqs, parms = "W", size = 2)
+# bwqs_plot(fit_bwqs, parms = "W", size = 2)
 ```
 
 ```{r plots1}
-bwqs_plot(fit_bwqs, parms = c("beta0","beta1",'delta',"sigma"), size = 2)
+# bwqs_plot(fit_bwqs, parms = c("beta0","beta1",'delta',"sigma"), size = 2)
 ```
 
 The `bwqs_waic` function evaluates the goodness of fit for the BWQS model. Several measures are included in the function. For further details check [here](http://www.stat.columbia.edu/~gelman/research/unpublished/loo_stan.pdf).  
@@ -219,7 +219,7 @@ head(round(dt,3))
 Now that we have the dataset we can fit the **HBWQS** model with the following code: 
 
 ```{r}
-# we run the model ans save results in "fit_bwqs" variable
+# we run the model ans save results in "fit_hbwqs" variable
 fit_hbwqs = bwqs_r(y ~ m_age + sex + education, 
                    mix_name = c("Ch_1","Ch_2","Ch_3","Ch_4"),
                    cluster_name = "cohort", Dalp = rep(1,4),

@@ -564,7 +564,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <h1 class="title toc-ignore">Bayesian Weighted Quantile Sum
 Regression</h1>
 <h4 class="author">Nicolo Foppa Pedretti, Elena Colicino</h4>
-<h4 class="date">26 January, 2023</h4>
+<h4 class="date">21 February, 2023</h4>
 
 
 
@@ -951,10 +951,8 @@ be plotted: <code>beta0</code> and <code>beta1</code> for the main
 parameters of the model, <code>W</code> for the weights and
 <code>delta</code> for the covariates. The <code>size</code> identifies
 the magnitude of the means dots.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bwqs_plot</span>(fit_bwqs, <span class="at">parms =</span> <span class="st">&quot;W&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="\mssm3/mssm3$/foppan01/Project_GitHub/bwqs/vignettes/bwqs_vignette_files/figure-html/plots-1.png" /><!-- --></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bwqs_plot</span>(fit_bwqs, <span class="at">parms =</span> <span class="fu">c</span>(<span class="st">&quot;beta0&quot;</span>,<span class="st">&quot;beta1&quot;</span>,<span class="st">&#39;delta&#39;</span>,<span class="st">&quot;sigma&quot;</span>), <span class="at">size =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="\mssm3/mssm3$/foppan01/Project_GitHub/bwqs/vignettes/bwqs_vignette_files/figure-html/plots1-1.png" /><!-- --></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bwqs_plot(fit_bwqs, parms = &quot;W&quot;, size = 2)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bwqs_plot(fit_bwqs, parms = c(&quot;beta0&quot;,&quot;beta1&quot;,&#39;delta&#39;,&quot;sigma&quot;), size = 2)</span></span></code></pre></div>
 <p>The <code>bwqs_waic</code> function evaluates the goodness of fit for
 the BWQS model. Several measures are included in the function. For
 further details check <a href="http://www.stat.columbia.edu/~gelman/research/unpublished/loo_stan.pdf">here</a>.</p>
@@ -1060,7 +1058,7 @@ name in code. Here the synthetic dataset:</p>
 #&gt; 6 -16.149 35.425   1    13.058 -0.798 0.305 -0.258 0.001      1</code></pre>
 <p>Now that we have the dataset we can fit the <strong>HBWQS</strong>
 model with the following code:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we run the model ans save results in &quot;fit_bwqs&quot; variable</span></span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we run the model ans save results in &quot;fit_hbwqs&quot; variable</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fit_hbwqs <span class="ot">=</span> <span class="fu">bwqs_r</span>(y <span class="sc">~</span> m_age <span class="sc">+</span> sex <span class="sc">+</span> education, </span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">mix_name =</span> <span class="fu">c</span>(<span class="st">&quot;Ch_1&quot;</span>,<span class="st">&quot;Ch_2&quot;</span>,<span class="st">&quot;Ch_3&quot;</span>,<span class="st">&quot;Ch_4&quot;</span>),</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cluster_name =</span> <span class="st">&quot;cohort&quot;</span>, <span class="at">Dalp =</span> <span class="fu">rep</span>(<span class="dv">1</span>,<span class="dv">4</span>),</span>
